@@ -10,14 +10,20 @@
   <meta property="og:title" content="Baby Pundir's Neverland ✨">
   <meta property="og:description" content="It's a boy! Our little Lost Boy is on his way. Follow Tinker Bell to Neverland!">
   <meta property="og:type" content="website">
-  <meta name="theme-color" content="#050824">
+  <meta name="theme-color" content="#041226">
 
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
-  <script>document.documentElement.classList.add("js");</script>
+  <script>
+    document.documentElement.classList.add("js");
+    // The opening flight plays once per visit (intro.js remembers it), and
+    // first waits on a "tap to enter" screen so the song can start with it.
+    try { if (sessionStorage.getItem("introSeen")) document.documentElement.classList.add("intro-seen"); } catch (e) {}
+    if (!document.documentElement.classList.contains("intro-seen")) document.documentElement.classList.add("waiting");
+  </script>
 </head>
 <body>
   <!-- Night sky: stars and shooting stars are drawn on this canvas -->
@@ -56,18 +62,29 @@
     <span class="cloud c1"></span><span class="cloud c2"></span><span class="cloud c3"></span>
   </div>
 
-  <!-- London skyline with Big Ben; windows are added by scene.js -->
-  <div class="layer skyline-wrap" data-depth="26" aria-hidden="true">
-    <svg class="skyline" viewBox="0 0 1200 220" preserveAspectRatio="xMidYMax slice">
-      <path d="M0 220V190H40V178H70V196H95V169H130V187H150V172H190V193H220V160H240V148H260V160H280V184H330V172H380V187H420V172H455V130L470 104L485 130V172H520V178H560V154H580V145H600V154H620V181H660V169H700V187H740V163H780V184H820V172H860V151H910V178H940V166H980V187H1020V160H1060V181H1100V169H1140V184H1170V175H1200V220Z"/>
-      <circle cx="470" cy="141" r="6" class="clock"/>
-      <g class="windows"></g>
-    </svg>
-  </div>
+  <!-- London at night with Big Ben (skyline.js loads it from assets/img/london.svg) -->
+  <div class="layer city-scene" data-depth="26" aria-hidden="true"></div>
 
   <!-- Drifting clouds (front) -->
   <div class="layer clouds clouds-front" data-depth="40" aria-hidden="true">
     <span class="cloud c4"></span><span class="cloud c5"></span>
+  </div>
+
+  <!-- Tap to enter: browsers only allow sound after a tap, so the show starts here -->
+  <button id="gate" class="gate" type="button">
+    <!-- Shri Ganesh blessing at the top ("Shri Mangalmurti", Ravi Varma Press, c. 1900, public domain) -->
+    <span class="ganesha" aria-hidden="true">
+      <img src="assets/img/ganesha.webp" alt="" width="240" height="240">
+      <span class="ganesha-mantra" lang="hi">॥ श्री गणेशाय नमः ॥</span>
+    </span>
+    <span class="gate-star" aria-hidden="true">✦</span>
+    <span class="enter gate-btn"><span>Click to enter Neverland</span></span>
+    <span class="gate-sub">Turn your sound on 🔊</span>
+  </button>
+
+  <!-- Opening flight: Peter and the Darlings cross the sky before the page appears -->
+  <div id="flyers" class="flyers" aria-hidden="true">
+    <img src="assets/img/flying-group.webp" alt="" width="581" height="628">
   </div>
 
   <main class="hero">
@@ -95,34 +112,22 @@
   <!-- Pixie dust -->
   <canvas id="dust" aria-hidden="true"></canvas>
 
-  <!-- Tinker Bell (an original glowing fairy drawing) -->
+  <!-- Tinker Bell -->
   <div id="tink" class="tink" aria-hidden="true">
     <span class="tink-glow"></span>
-    <svg viewBox="0 0 80 80" width="110" height="110">
-      <defs>
-        <linearGradient id="wing" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#f2fdff" stop-opacity=".95"/>
-          <stop offset="100%" stop-color="#9fe3ff" stop-opacity=".3"/>
-        </linearGradient>
-      </defs>
-      <g class="wings">
-        <ellipse class="wing wing-back" cx="30" cy="30" rx="15" ry="7" transform="rotate(-35 30 30)" fill="url(#wing)" stroke="#ffffff" stroke-opacity=".7" stroke-width=".6"/>
-        <ellipse class="wing wing-front" cx="31" cy="42" rx="11" ry="5" transform="rotate(20 31 42)" fill="url(#wing)" stroke="#ffffff" stroke-opacity=".7" stroke-width=".6"/>
-      </g>
-      <path d="M42 50 L37 62 M44 50 L45 63" stroke="#f6d2b4" stroke-width="2" stroke-linecap="round"/>
-      <path d="M40 34 Q47 34 48 40 L52 51 Q46 49 44 52 Q41 48 37 51 Q38 44 40 34 Z" fill="#5fd068"/>
-      <path d="M45 37 L55 32" stroke="#f6d2b4" stroke-width="2" stroke-linecap="round"/>
-      <circle class="wand" cx="57" cy="31" r="2.2" fill="#fffbe0"/>
-      <circle cx="44" cy="28" r="5.2" fill="#f6d2b4"/>
-      <path d="M39 27 Q40 21 45 22 Q49 23 49 27 Q46 24 41 26 Z" fill="#f7d35a"/>
-      <circle cx="41" cy="21" r="3" fill="#f7d35a"/>
-    </svg>
+    <img src="assets/img/tinkerbell.webp" alt="" width="354" height="400">
   </div>
 
   <div class="curtain" aria-hidden="true"></div>
 
+  <!-- Background song (music.js starts it on the first tap) -->
+  <audio id="music" src="assets/audio/you-can-fly.m4a" loop preload="metadata"></audio>
+
   <script src="assets/js/sky.js"></script>
+  <script src="assets/js/skyline.js"></script>
   <script src="assets/js/tinkerbell.js"></script>
   <script src="assets/js/scene.js"></script>
+  <script src="assets/js/intro.js"></script>
+  <script src="assets/js/music.js"></script>
 </body>
 </html>

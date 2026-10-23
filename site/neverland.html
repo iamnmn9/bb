@@ -3,29 +3,170 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Neverland — Coming Soon</title>
-  <meta name="theme-color" content="#0b1033">
+  <title>You're Invited: Baby Pundir's Baby Shower</title>
+  <meta name="description" content="The invitation, registry and RSVP for Baby Pundir's Peter Pan baby shower. It's a boy!">
+  <meta property="og:title" content="You're invited to Baby Pundir's baby shower ✨">
+  <meta property="og:description" content="It's a boy! Second star to the right, and straight on till morning.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#041226">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
+  <script>document.documentElement.classList.add("js");</script>
 </head>
-<body>
+<body class="inside">
+  <!-- Night sky: stars and shooting stars are drawn on this canvas -->
   <canvas id="sky" aria-hidden="true"></canvas>
-  <div class="layer" aria-hidden="true"><div class="moon"></div></div>
 
-  <!-- Placeholder: invitation, Amazon registry and RSVP will live here. -->
-  <main class="hero">
-    <p class="kicker">You made it!</p>
-    <h1>
-      <span class="small">Welcome to</span>
-      Neverland
-    </h1>
-    <p class="lede">The Lost Boys are still putting up the decorations for our newest Lost Boy. The invitation, registry and RSVP will be here very soon.</p>
-    <a class="enter" href="./"><span>Fly back home</span></a>
+  <!-- The second star to the right -->
+  <div class="layer" aria-hidden="true">
+    <div class="second-star"></div>
+  </div>
+
+  <!-- The moon, with Peter Pan flying across it now and then -->
+  <div class="layer" aria-hidden="true">
+    <div class="moon">
+      <svg class="peter" viewBox="0 0 100 50" aria-hidden="true">
+        <g fill="#1b1a3a" stroke="#1b1a3a" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M52 25 L27 21" stroke-width="4.5" fill="none"/>
+          <path d="M52 28 L35 34 L24 31" stroke-width="4.2" fill="none"/>
+          <path d="M74 23 L52 25" stroke-width="9" fill="none"/>
+          <path d="M50 20 L58 21 L54 31 L50 27 L47 31 Z" stroke-width="1"/>
+          <path d="M71 21 L93 23" stroke-width="3.4" fill="none"/>
+          <path d="M70 26 L82 33 L88 32" stroke-width="3.2" fill="none"/>
+          <circle cx="78" cy="19" r="5.2" stroke="none"/>
+          <path d="M72 17 Q78 11 85 15 L61 16 Z" stroke-width="1"/>
+          <path d="M74 14 Q71 9 75 5" stroke-width="1.3" fill="none"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Drifting clouds -->
+  <div class="layer clouds" aria-hidden="true">
+    <span class="cloud c1"></span><span class="cloud c2"></span><span class="cloud c3"></span>
+  </div>
+
+  <!-- London at night with Big Ben (skyline.js loads it from assets/img/london.svg) -->
+  <div class="layer city-scene" aria-hidden="true"></div>
+
+  <header class="inside-hero">
+    <div class="inside-title">
+      <p class="kicker">You made it to Neverland!</p>
+      <h1>
+        <span class="small">You're invited to</span>
+        Baby Pundir's Baby Shower
+      </h1>
+    </div>
+
+    <p class="badge revealed">
+      <span class="badge-star" aria-hidden="true">✦</span>
+      It's a Boy!
+      <span class="badge-star" aria-hidden="true">✦</span>
+    </p>
+
+    <!-- Countdown, filled in by neverland.js.
+         TODO: set data-start to the shower's start, with its UTC offset,
+         e.g. data-start="2026-12-12T14:00:00+00:00". -->
+    <div id="countdown" class="countdown" data-start="">
+      <p class="countdown-label">Until we fly to Neverland</p>
+      <div class="countdown-units" role="timer" hidden>
+        <span class="unit"><b data-unit="days">0</b><small>days</small></span>
+        <span class="unit"><b data-unit="hours">0</b><small>hours</small></span>
+        <span class="unit"><b data-unit="minutes">0</b><small>mins</small></span>
+        <span class="unit"><b data-unit="seconds">0</b><small>secs</small></span>
+      </div>
+      <p class="countdown-note"><span class="todo">The countdown begins once the date is set</span></p>
+    </div>
+
+    <nav class="pills" aria-label="Sections">
+      <a href="#invitation">Invitation</a>
+      <a href="#registry">Registry</a>
+      <a href="#rsvp">RSVP</a>
+    </nav>
+  </header>
+
+  <main class="sections">
+    <!-- 1. Invitation -->
+    <section id="invitation" class="card rise-in" aria-labelledby="invitation-title">
+      <p class="eyebrow">The Invitation</p>
+      <h2 id="invitation-title">Come fly with us</h2>
+      <p class="quote">“All children, except one, grow up.”</p>
+      <p>Our newest Lost Boy is on his way! Please join us for a baby shower in honour of <strong>Baby Pundir</strong>, our little boy. Bring your happy thoughts, and we'll bring the pixie dust, as we get ready to welcome him home.</p>
+
+      <dl class="details">
+        <div>
+          <dt>When</dt>
+          <!-- TODO: date and time -->
+          <dd><span class="todo">Date</span> · <span class="todo">Time</span></dd>
+        </div>
+        <div>
+          <dt>Where</dt>
+          <!-- TODO: venue name and address; give the map link an href:
+               https://www.google.com/maps/search/?api=1&query=<url-encoded address> -->
+          <dd>
+            <span class="todo">Venue name</span><br>
+            <span class="todo">Venue address</span><br>
+            <a class="map-link is-todo" aria-disabled="true">Open in Google Maps</a>
+          </dd>
+        </div>
+        <div>
+          <dt>Hosted by</dt>
+          <!-- TODO: host names -->
+          <dd><span class="todo">Host names</span></dd>
+        </div>
+      </dl>
+
+      <!-- TODO: once the details are set, link these to baby-shower.ics and a Google Calendar URL -->
+      <div class="actions">
+        <p class="actions-label">Add to calendar</p>
+        <a class="btn is-todo" aria-disabled="true">Apple / Outlook (.ics)</a>
+        <a class="btn is-todo" aria-disabled="true">Google Calendar</a>
+      </div>
+    </section>
+
+    <!-- 2. Amazon registry -->
+    <section id="registry" class="card card-registry rise-in" aria-labelledby="registry-title">
+      <p class="eyebrow">The Registry</p>
+      <h2 id="registry-title">A treasure chest for our Lost Boy</h2>
+      <p>Your company is the greatest gift of all. If you'd like to bring something for Baby Pundir, we've put together a little list on Amazon.</p>
+      <!-- TODO: add href="<Amazon registry URL>" target="_blank" rel="noopener" and remove is-todo / aria-disabled -->
+      <a class="enter is-todo" aria-disabled="true"><span>Open our Amazon registry</span></a>
+      <p class="fine-print"><span class="todo">Registry link coming soon</span></p>
+    </section>
+
+    <!-- 3. RSVP (the form is waiting on the choice of RSVP service) -->
+    <section id="rsvp" class="card rise-in" aria-labelledby="rsvp-title">
+      <p class="eyebrow">RSVP</p>
+      <h2 id="rsvp-title">Will you fly with us?</h2>
+      <p>Please let us know if you can make it by <span class="todo">RSVP-by date</span>.</p>
+      <p class="fine-print"><span class="todo">The RSVP form is on its way</span></p>
+    </section>
   </main>
 
+  <!-- Room at the end to see the city below the cards -->
+  <footer class="city">
+    <a class="back-home" href="./">✦ Fly back to the start ✦</a>
+  </footer>
+
+  <!-- Pixie dust -->
+  <canvas id="dust" aria-hidden="true"></canvas>
+
+  <!-- Tinker Bell: rests in the corner and follows the pointer (data-calm) -->
+  <div id="tink" class="tink" data-calm aria-hidden="true">
+    <span class="tink-glow"></span>
+    <img src="assets/img/tinkerbell.webp" alt="" width="354" height="400">
+  </div>
+
+  <!-- Background song (music.js starts it on the first tap) -->
+  <audio id="music" src="assets/audio/you-can-fly.m4a" loop preload="metadata"></audio>
+
   <script src="assets/js/sky.js"></script>
+  <script src="assets/js/skyline.js"></script>
+  <script src="assets/js/tinkerbell.js"></script>
+  <script src="assets/js/neverland.js"></script>
+  <script src="assets/js/music.js"></script>
 </body>
 </html>
