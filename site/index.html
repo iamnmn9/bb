@@ -4,86 +4,125 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Baby Pundir's Neverland</title>
-  <meta name="description" content="You're invited to Baby Pundir's Peter Pan baby shower. Second star to the right, and straight on till morning.">
+  <meta name="description" content="It's a boy! You're invited to Baby Pundir's Peter Pan baby shower. Second star to the right, and straight on till morning.">
 
   <!-- Link previews (WhatsApp, iMessage, etc.) -->
   <meta property="og:title" content="Baby Pundir's Neverland ✨">
-  <meta property="og:description" content="You're invited to a Peter Pan baby shower. Follow Tinker Bell to Neverland!">
+  <meta property="og:description" content="It's a boy! Our little Lost Boy is on his way. Follow Tinker Bell to Neverland!">
   <meta property="og:type" content="website">
-  <meta name="theme-color" content="#0b1033">
+  <meta name="theme-color" content="#050824">
 
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
+  <script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
-  <!-- Night sky: stars are drawn on this canvas -->
-  <canvas id="sky" aria-hidden="true"></canvas>
+  <!-- Night sky: stars and shooting stars are drawn on this canvas -->
+  <canvas id="sky" class="layer" data-depth="6" aria-hidden="true"></canvas>
 
   <!-- The second star to the right -->
-  <div class="second-star" aria-hidden="true"></div>
+  <div class="layer" data-depth="10" aria-hidden="true">
+    <div class="second-star"></div>
+  </div>
 
-  <div class="moon" aria-hidden="true"></div>
+  <!-- The moon, with Peter Pan flying across it now and then -->
+  <div class="layer" data-depth="14" aria-hidden="true">
+    <div class="moon">
+      <svg class="peter" viewBox="0 0 100 50" aria-hidden="true">
+        <g fill="#1b1a3a" stroke="#1b1a3a" stroke-linecap="round" stroke-linejoin="round">
+          <!-- legs trailing behind -->
+          <path d="M52 25 L27 21" stroke-width="4.5" fill="none"/>
+          <path d="M52 28 L35 34 L24 31" stroke-width="4.2" fill="none"/>
+          <!-- body + jagged tunic -->
+          <path d="M74 23 L52 25" stroke-width="9" fill="none"/>
+          <path d="M50 20 L58 21 L54 31 L50 27 L47 31 Z" stroke-width="1"/>
+          <!-- arms reaching forward -->
+          <path d="M71 21 L93 23" stroke-width="3.4" fill="none"/>
+          <path d="M70 26 L82 33 L88 32" stroke-width="3.2" fill="none"/>
+          <!-- head, pointed hat and feather -->
+          <circle cx="78" cy="19" r="5.2" stroke="none"/>
+          <path d="M72 17 Q78 11 85 15 L61 16 Z" stroke-width="1"/>
+          <path d="M74 14 Q71 9 75 5" stroke-width="1.3" fill="none"/>
+        </g>
+      </svg>
+    </div>
+  </div>
 
-  <!-- London skyline silhouette with Big Ben -->
-  <svg class="skyline" viewBox="0 0 1200 220" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
-    <path d="M0 220V190H40V178H70V196H95V169H130V187H150V172H190V193H220V160H240V148H260V160H280V184H330V172H380V187H420V172H455V130L470 104L485 130V172H520V178H560V154H580V145H600V154H620V181H660V169H700V187H740V163H780V184H820V172H860V151H910V178H940V166H980V187H1020V160H1060V181H1100V169H1140V184H1170V175H1200V220Z"/>
-    <!-- Big Ben clock face -->
-    <circle cx="470" cy="141" r="6" class="clock"/>
-  </svg>
+  <!-- Drifting clouds (back) -->
+  <div class="layer clouds clouds-back" data-depth="18" aria-hidden="true">
+    <span class="cloud c1"></span><span class="cloud c2"></span><span class="cloud c3"></span>
+  </div>
 
-  <!-- Pixie dust trail -->
+  <!-- London skyline with Big Ben; windows are added by scene.js -->
+  <div class="layer skyline-wrap" data-depth="26" aria-hidden="true">
+    <svg class="skyline" viewBox="0 0 1200 220" preserveAspectRatio="xMidYMax slice">
+      <path d="M0 220V190H40V178H70V196H95V169H130V187H150V172H190V193H220V160H240V148H260V160H280V184H330V172H380V187H420V172H455V130L470 104L485 130V172H520V178H560V154H580V145H600V154H620V181H660V169H700V187H740V163H780V184H820V172H860V151H910V178H940V166H980V187H1020V160H1060V181H1100V169H1140V184H1170V175H1200V220Z"/>
+      <circle cx="470" cy="141" r="6" class="clock"/>
+      <g class="windows"></g>
+    </svg>
+  </div>
+
+  <!-- Drifting clouds (front) -->
+  <div class="layer clouds clouds-front" data-depth="40" aria-hidden="true">
+    <span class="cloud c4"></span><span class="cloud c5"></span>
+  </div>
+
+  <main class="hero">
+    <p class="kicker reveal" style="--d: .3s">Second star to the right, and straight on till morning</p>
+    <h1 id="title">
+      <span class="sr-only">Welcome to Baby Pundir's Neverland</span>
+      <span class="small reveal" style="--d: .6s" aria-hidden="true">Welcome to</span>
+      <span class="letters" aria-hidden="true">Baby Pundir's</span><br>
+      <span class="letters" aria-hidden="true">Neverland</span>
+    </h1>
+
+    <p id="badge" class="badge">
+      <span class="badge-star" aria-hidden="true">✦</span>
+      It's a Boy!
+      <span class="badge-star" aria-hidden="true">✦</span>
+    </p>
+
+    <p class="lede reveal" style="--d: 3.4s">Think happy thoughts and sprinkle a little pixie dust. Our very own Lost Boy is flying in soon, and we'd love for you to celebrate with us.</p>
+    <a id="enter" class="enter reveal" style="--d: 3.8s" href="neverland.html">
+      <span>Click here to enter Baby Pundir's Neverland</span>
+    </a>
+    <p class="hint reveal" style="--d: 4.4s">Psst… Tinker Bell follows you if you wave at her.</p>
+  </main>
+
+  <!-- Pixie dust -->
   <canvas id="dust" aria-hidden="true"></canvas>
 
   <!-- Tinker Bell (an original glowing fairy drawing) -->
   <div id="tink" class="tink" aria-hidden="true">
+    <span class="tink-glow"></span>
     <svg viewBox="0 0 80 80" width="110" height="110">
       <defs>
-        <radialGradient id="glow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#fff8c9" stop-opacity=".95"/>
-          <stop offset="40%" stop-color="#ffe066" stop-opacity=".45"/>
-          <stop offset="100%" stop-color="#ffe066" stop-opacity="0"/>
-        </radialGradient>
         <linearGradient id="wing" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#e9fbff" stop-opacity=".9"/>
-          <stop offset="100%" stop-color="#9fe3ff" stop-opacity=".35"/>
+          <stop offset="0%" stop-color="#f2fdff" stop-opacity=".95"/>
+          <stop offset="100%" stop-color="#9fe3ff" stop-opacity=".3"/>
         </linearGradient>
       </defs>
-      <circle cx="40" cy="40" r="38" fill="url(#glow)"/>
       <g class="wings">
-        <ellipse class="wing wing-back" cx="30" cy="30" rx="15" ry="7" transform="rotate(-35 30 30)" fill="url(#wing)" stroke="#ffffff" stroke-opacity=".6" stroke-width=".6"/>
-        <ellipse class="wing wing-front" cx="31" cy="42" rx="11" ry="5" transform="rotate(20 31 42)" fill="url(#wing)" stroke="#ffffff" stroke-opacity=".6" stroke-width=".6"/>
+        <ellipse class="wing wing-back" cx="30" cy="30" rx="15" ry="7" transform="rotate(-35 30 30)" fill="url(#wing)" stroke="#ffffff" stroke-opacity=".7" stroke-width=".6"/>
+        <ellipse class="wing wing-front" cx="31" cy="42" rx="11" ry="5" transform="rotate(20 31 42)" fill="url(#wing)" stroke="#ffffff" stroke-opacity=".7" stroke-width=".6"/>
       </g>
-      <!-- legs -->
       <path d="M42 50 L37 62 M44 50 L45 63" stroke="#f6d2b4" stroke-width="2" stroke-linecap="round"/>
-      <!-- leaf dress -->
       <path d="M40 34 Q47 34 48 40 L52 51 Q46 49 44 52 Q41 48 37 51 Q38 44 40 34 Z" fill="#5fd068"/>
-      <!-- arm reaching forward with wand -->
       <path d="M45 37 L55 32" stroke="#f6d2b4" stroke-width="2" stroke-linecap="round"/>
-      <circle cx="57" cy="31" r="2.2" fill="#fffbe0"/>
-      <!-- head + hair bun -->
+      <circle class="wand" cx="57" cy="31" r="2.2" fill="#fffbe0"/>
       <circle cx="44" cy="28" r="5.2" fill="#f6d2b4"/>
       <path d="M39 27 Q40 21 45 22 Q49 23 49 27 Q46 24 41 26 Z" fill="#f7d35a"/>
       <circle cx="41" cy="21" r="3" fill="#f7d35a"/>
     </svg>
   </div>
 
-  <main class="hero">
-    <p class="kicker">Second star to the right, and straight on till morning</p>
-    <h1>
-      <span class="small">Welcome to</span>
-      Baby Pundir's<br>Neverland
-    </h1>
-    <p class="lede">Think happy thoughts, sprinkle a little pixie dust, and come celebrate our littlest Lost Boy or Girl with us.</p>
-    <a id="enter" class="enter" href="neverland.html">
-      <span>Click here to enter Baby Pundir's Neverland</span>
-    </a>
-    <p class="hint">Psst… Tinker Bell follows you if you wave at her.</p>
-  </main>
+  <div class="curtain" aria-hidden="true"></div>
 
   <script src="assets/js/sky.js"></script>
   <script src="assets/js/tinkerbell.js"></script>
+  <script src="assets/js/scene.js"></script>
 </body>
 </html>

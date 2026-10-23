@@ -12,6 +12,7 @@ site/                     ← everything that gets published
   assets/css/style.css
   assets/js/sky.js        ← twinkling stars
   assets/js/tinkerbell.js ← Tinker Bell + pixie dust trail
+  assets/js/scene.js      ← opening sequence, "It's a Boy!" reveal, parallax
 .github/workflows/
   pages.yml               ← deploys site/ to GitHub Pages on push to main
   check.yml               ← validates the HTML on PRs and pushes

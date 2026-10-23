@@ -1,39 +1,113 @@
-// Twinkling starfield behind everything.
+// Twinkling starfield and the odd shooting star.
 (function () {
   const canvas = document.getElementById("sky");
   const ctx = canvas.getContext("2d");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let stars = [];
+  let shooting = [];
+  let nextShootAt = 2500;
   let w, h, dpr;
 
   function resize() {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
-    w = window.innerWidth;
-    h = window.innerHeight;
+    // A little bigger than the window so parallax never shows an edge.
+    w = window.innerWidth + 80;
+    h = window.innerHeight + 80;
+    canvas.style.width = w + "px";
+    canvas.style.height = h + "px";
+    canvas.style.position = "fixed";
+    canvas.style.left = canvas.style.top = "-40px";
     canvas.width = w * dpr;
     canvas.height = h * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    const count = Math.round((w * h) / 4500);
-    stars = Array.from({ length: count }, () => ({
-      x: Math.random() * w,
-      y: Math.random() * h * 0.85,
-      r: Math.random() * 1.3 + 0.2,
-      phase: Math.random() * Math.PI * 2,
-      speed: Math.random() * 1.5 + 0.5,
-    }));
+    const count = Math.round((w * h) / 4000);
+    stars = Array.from({ length: count }, () => {
+      const big = Math.random() < 0.06;
+      return {
+        x: Math.random() * w,
+        y: Math.random() * h * 0.85,
+        r: big ? Math.random() * 0.8 + 1.4 : Math.random() * 1.1 + 0.2,
+        phase: Math.random() * Math.PI * 2,
+        speed: Math.random() * 1.5 + 0.4,
+        tint: Math.random() < 0.15 ? "#cfe9ff" : Math.random() < 0.1 ? "#fff1c4" : "#ffffff",
+        big,
+      };
+    });
+  }
+
+  function spawnShootingStar() {
+    const fromLeft = Math.random() < 0.5;
+    const angle = (fromLeft ? 0.35 : Math.PI - 0.35) + (Math.random() - 0.5) * 0.3;
+    const speed = 14 + Math.random() * 8;
+    shooting.push({
+      x: fromLeft ? Math.random() * w * 0.5 : w * 0.5 + Math.random() * w * 0.5,
+      y: Math.random() * h * 0.35,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      life: 0,
+      maxLife: 45 + Math.random() * 20,
+    });
+  }
+
+  function drawStar(s, t) {
+    const twinkle = reduceMotion ? 0.8 : 0.5 + 0.5 * Math.sin(t / 1000 * s.speed + s.phase);
+    ctx.globalAlpha = twinkle;
+    ctx.fillStyle = s.tint;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fill();
+    if (s.big) {
+      // Soft cross-shaped glint on the brightest stars.
+      const len = s.r * 5 * twinkle;
+      ctx.globalAlpha = twinkle * 0.6;
+      ctx.strokeStyle = s.tint;
+      ctx.lineWidth = 0.7;
+      ctx.beginPath();
+      ctx.moveTo(s.x - len, s.y);
+      ctx.lineTo(s.x + len, s.y);
+      ctx.moveTo(s.x, s.y - len);
+      ctx.lineTo(s.x, s.y + len);
+      ctx.stroke();
+    }
+  }
+
+  function drawShootingStars(t) {
+    if (t > nextShootAt) {
+      spawnShootingStar();
+      nextShootAt = t + 4000 + Math.random() * 7000;
+    }
+    for (let i = shooting.length - 1; i >= 0; i--) {
+      const s = shooting[i];
+      s.life++;
+      s.x += s.vx;
+      s.y += s.vy;
+      const fade = Math.sin((s.life / s.maxLife) * Math.PI);
+      if (s.life >= s.maxLife) {
+        shooting.splice(i, 1);
+        continue;
+      }
+      const tailX = s.x - s.vx * 9;
+      const tailY = s.y - s.vy * 9;
+      const g = ctx.createLinearGradient(s.x, s.y, tailX, tailY);
+      g.addColorStop(0, `rgba(255,255,255,${fade})`);
+      g.addColorStop(0.3, `rgba(200,230,255,${fade * 0.5})`);
+      g.addColorStop(1, "rgba(200,230,255,0)");
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = g;
+      ctx.lineWidth = 2;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.moveTo(s.x, s.y);
+      ctx.lineTo(tailX, tailY);
+      ctx.stroke();
+    }
   }
 
   function draw(t) {
     ctx.clearRect(0, 0, w, h);
-    for (const s of stars) {
-      const twinkle = reduceMotion ? 0.8 : 0.55 + 0.45 * Math.sin(t / 1000 * s.speed + s.phase);
-      ctx.globalAlpha = twinkle;
-      ctx.fillStyle = "#ffffff";
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fill();
-    }
+    for (const s of stars) drawStar(s, t);
+    if (!reduceMotion) drawShootingStars(t);
     ctx.globalAlpha = 1;
     if (!reduceMotion) requestAnimationFrame(draw);
   }
