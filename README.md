@@ -8,11 +8,13 @@ It is a plain static site (HTML/CSS/JS, no build step) hosted on GitHub Pages.
 ```
 site/                     ← everything that gets published
   index.html              ← landing page (Tinker Bell + "enter Neverland")
-  neverland.html          ← inside page (placeholder for invite/registry/RSVP)
+  neverland.html          ← inside page: invitation, countdown, registry, RSVP
   assets/css/style.css
   assets/js/sky.js        ← twinkling stars
+  assets/js/skyline.js    ← lit windows in the London skyline
   assets/js/tinkerbell.js ← Tinker Bell + pixie dust trail
   assets/js/scene.js      ← opening sequence, "It's a Boy!" reveal, parallax
+  assets/js/neverland.js  ← countdown + cards rising into view
 .github/workflows/
   pages.yml               ← deploys site/ to GitHub Pages on push to main
   check.yml               ← validates the HTML on PRs and pushes
