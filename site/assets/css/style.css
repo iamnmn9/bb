@@ -1,0 +1,248 @@
+:root {
+  --night-1: #050824;
+  --night-2: #0b1033;
+  --night-3: #1d2463;
+  --dusk: #3b2f6b;
+  --gold: #ffd76a;
+  --gold-soft: #fff1b8;
+  --leaf: #5fd068;
+  --ink: #f5f1ff;
+  --ink-dim: #c8c3e8;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+  color: var(--ink);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  background:
+    radial-gradient(ellipse at 50% 120%, var(--dusk) 0%, transparent 60%),
+    linear-gradient(180deg, var(--night-1) 0%, var(--night-2) 45%, var(--night-3) 100%);
+  background-color: var(--night-2);
+}
+
+#sky, #dust {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+#sky { z-index: 0; }
+#dust { z-index: 3; }
+
+/* ---------- Moon, star, skyline ---------- */
+
+.moon {
+  position: fixed;
+  z-index: 1;
+  top: 9vh;
+  left: 8vw;
+  width: clamp(70px, 12vw, 150px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 38%, #fffdf0 0%, #f6eec8 55%, #d9cf9f 100%);
+  box-shadow: 0 0 60px 18px rgba(255, 246, 200, .25);
+}
+
+.second-star {
+  position: fixed;
+  z-index: 1;
+  top: 14vh;
+  right: 14vw;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow:
+    0 0 12px 4px #fff,
+    0 0 40px 14px rgba(255, 230, 140, .6);
+  animation: pulse 3s ease-in-out infinite;
+}
+.second-star::before,
+.second-star::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 70px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #fff, transparent);
+  transform: translate(-50%, -50%);
+}
+.second-star::after { transform: translate(-50%, -50%) rotate(90deg); }
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.35); opacity: .8; }
+}
+
+.skyline {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: clamp(110px, 22vh, 220px);
+  fill: #04061a;
+}
+.skyline .clock {
+  fill: #ffe9a8;
+  filter: drop-shadow(0 0 4px #ffe9a8);
+}
+
+@media (max-width: 600px) {
+  .moon { top: 3vh; left: 5vw; width: 56px; }
+  .second-star { top: 6vh; right: 10vw; }
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px 16px 22vh;
+}
+
+.kicker {
+  margin: 0 0 1rem;
+  font-style: italic;
+  font-size: clamp(1rem, 2.4vw, 1.3rem);
+  color: var(--ink-dim);
+  letter-spacing: .02em;
+}
+
+h1 {
+  margin: 0;
+  font-family: "Cinzel Decorative", "Cormorant Garamond", serif;
+  font-weight: 700;
+  font-size: clamp(2.3rem, 8vw, 5.2rem);
+  line-height: 1.08;
+  color: var(--gold-soft);
+  text-shadow:
+    0 0 18px rgba(255, 215, 106, .55),
+    0 0 46px rgba(255, 215, 106, .25);
+}
+h1 .small {
+  display: block;
+  font-size: .38em;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  text-shadow: none;
+  margin-bottom: .4em;
+}
+
+.lede {
+  max-width: 34rem;
+  margin: 1.4rem auto 2.2rem;
+  font-size: clamp(1.1rem, 2.6vw, 1.4rem);
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.enter {
+  position: relative;
+  display: inline-block;
+  padding: 1rem 2rem;
+  border-radius: 999px;
+  font-family: "Cinzel Decorative", serif;
+  font-size: clamp(.95rem, 2.6vw, 1.15rem);
+  font-weight: 700;
+  color: #1a1440;
+  text-decoration: none;
+  background: linear-gradient(135deg, #fff3c4 0%, var(--gold) 50%, #f3b93f 100%);
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, .5) inset,
+    0 0 28px 6px rgba(255, 215, 106, .45);
+  transition: transform .25s ease, box-shadow .25s ease;
+  animation: beckon 2.6s ease-in-out infinite;
+}
+.enter:hover,
+.enter:focus-visible {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, .7) inset,
+    0 0 44px 12px rgba(255, 215, 106, .7);
+  outline: none;
+}
+.enter:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
+
+@keyframes beckon {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(255,255,255,.5) inset, 0 0 24px 4px rgba(255,215,106,.4); }
+  50%      { box-shadow: 0 0 0 2px rgba(255,255,255,.5) inset, 0 0 40px 12px rgba(255,215,106,.65); }
+}
+
+.hint {
+  margin-top: 1.4rem;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--ink-dim);
+  opacity: .8;
+}
+
+/* ---------- Tinker Bell ---------- */
+
+.tink {
+  position: fixed;
+  z-index: 4;
+  left: 0;
+  top: 0;
+  width: 110px;
+  height: 110px;
+  margin: -55px 0 0 -55px;
+  pointer-events: none;
+  will-change: transform;
+  filter: drop-shadow(0 0 10px rgba(255, 230, 120, .9));
+}
+.tink svg { display: block; overflow: visible; }
+
+.tink .wing {
+  transform-box: fill-box;
+  transform-origin: 85% 60%;
+  animation: flutter .09s linear infinite alternate;
+}
+.tink .wing-front { animation-delay: .045s; }
+
+@keyframes flutter {
+  from { scale: 1 1; }
+  to   { scale: .55 1; }
+}
+
+/* ---------- Page leave transition ---------- */
+
+body.leaving::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), #fffbe6 0%, var(--gold) 30%, var(--night-1) 75%);
+  animation: whoosh .9s ease-in forwards;
+}
+@keyframes whoosh {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ---------- Motion preferences ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .second-star,
+  .enter,
+  .tink .wing { animation: none; }
+}
