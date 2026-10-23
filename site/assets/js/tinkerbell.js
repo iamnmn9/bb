@@ -1,16 +1,19 @@
 // Tinker Bell flits around the page leaving a pixie dust trail.
 // She wanders between random points, visits the "enter" button now and then,
 // and chases the visitor's pointer/finger when they move it.
+// With data-calm (the inside page) she rests in a corner instead of
+// wandering, so she doesn't get in the way of reading.
 // scene.js can script her flight through window.Tink.
 (function () {
   const tink = document.getElementById("tink");
   const canvas = document.getElementById("dust");
   const ctx = canvas.getContext("2d");
   const enter = document.getElementById("enter");
+  const calm = "calm" in tink.dataset;
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const GOLD = ["#fff8d6", "#ffe58a", "#ffd76a", "#ffffff", "#c9f2ff"];
-  const MAX_SPEED = 7;
+  const MAX_SPEED = 3.5;
   const STEER = 0.12;
   const MAX_PARTICLES = 900;
 
@@ -23,8 +26,11 @@
   let leaving = false;
   let facing = 1;
   let route = []; // scripted waypoints: { x, y, speed, done }
-  // Wait off-stage briefly so scene.js can give her an entrance.
-  const offStageUntil = performance.now() + 2600;
+  // How long the opening flight (intro.js) holds the stage, from --intro in the CSS.
+  const introMs = reduceMotion || !document.getElementById("flyers") ? 0
+    : parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--intro")) * 1000 || 0;
+  // Wait off-stage so scene.js can give her an entrance once the show starts.
+  let offStageUntil = Infinity;
   const particles = [];
   const listeners = [];
 
@@ -63,7 +69,16 @@
     return { x: r.left + r.width / 2, y: r.top + r.height / 2, r };
   }
 
+  // Calm mode's resting spot, in the bottom right corner.
+  function restSpot() {
+    return { x: w - 56, y: h - 76 };
+  }
+
   function pickWaypoint() {
+    if (calm) {
+      const r = restSpot();
+      return { x: r.x + rand(-14, 14), y: r.y + rand(-14, 14) };
+    }
     // Every so often swing by the button to say "click me!"
     if (Math.random() < 0.25) {
       const b = buttonCenter();
@@ -164,7 +179,7 @@
 
   function step(t) {
     // Decide where to fly.
-    const chasing = pointer && t - pointerSeenAt < 1500 && !leaving && !route.length;
+    const chasing = pointer && t - pointerSeenAt < 1500 && !leaving && !route.length && t > offStageUntil;
     let speedBoost = 1;
     if (route.length) {
       const leg = route[0];
@@ -188,21 +203,22 @@
     const dx = target.x - pos.x;
     const dy = target.y - pos.y;
     const dist = Math.hypot(dx, dy) || 1;
-    const speed = Math.min(MAX_SPEED * speedBoost, dist * 0.08 + 1.5);
+    const speed = Math.min(MAX_SPEED * speedBoost, dist * 0.04 + 0.75);
     vel.x += ((dx / dist) * speed - vel.x) * STEER;
     vel.y += ((dy / dist) * speed - vel.y) * STEER;
     pos.x += vel.x;
     pos.y += vel.y + Math.sin(t / 180) * 0.9;
 
-    if (Math.abs(vel.x) > 0.4) facing = vel.x > 0 ? 1 : -1;
-    const tilt = Math.max(-22, Math.min(22, vel.y * 3)) * facing;
+    if (Math.abs(vel.x) > 0.2) facing = vel.x > 0 ? 1 : -1;
+    const tilt = Math.max(-22, Math.min(22, vel.y * 6)) * facing;
     tink.style.transform =
       `translate3d(${pos.x}px, ${pos.y}px, 0) scaleX(${facing}) rotate(${tilt}deg)`;
 
-    // Pixie dust from her wings and wand; more of it the faster she flies.
-    const fast = Math.hypot(vel.x, vel.y) > 3;
-    emit(pos.x - 8 * facing, pos.y + 6, fast ? 3 : 2, 0.6);
-    if (Math.random() < 0.6) emit(pos.x + 21 * facing, pos.y - 12, 1, 0.4);
+    // Pixie dust from her wings and wand; more of it the faster she flies
+    // (and a lighter sprinkle in calm mode).
+    const fast = Math.hypot(vel.x, vel.y) > 1.5;
+    emit(pos.x - 8 * facing, pos.y + 6, calm ? (fast ? 2 : 1) : (fast ? 3 : 2), 0.6);
+    if (Math.random() < (calm ? 0.3 : 0.6)) emit(pos.x + 21 * facing, pos.y - 12, 1, 0.4);
 
     for (const fn of listeners) fn(pos.x, pos.y);
 
@@ -215,25 +231,27 @@
     pointerSeenAt = performance.now();
   }
 
-  enter.addEventListener("click", (e) => {
-    if (reduceMotion || leaving) return; // follow the link straight away
-    e.preventDefault();
-    leaving = true;
-    route = [];
+  if (enter) {
+    enter.addEventListener("click", (e) => {
+      if (reduceMotion || leaving) return; // follow the link straight away
+      e.preventDefault();
+      leaving = true;
+      route = [];
 
-    const b = buttonCenter();
-    target = { x: b.x, y: b.y };
-    burst(b.x, b.y, 160);
+      const b = buttonCenter();
+      target = { x: b.x, y: b.y };
+      burst(b.x, b.y, 160);
 
-    document.body.style.setProperty("--x", `${b.x}px`);
-    document.body.style.setProperty("--y", `${b.y}px`);
-    setTimeout(() => document.body.classList.add("leaving"), 250);
-    setTimeout(() => { window.location.href = enter.href; }, 1100);
-  });
+      document.body.style.setProperty("--x", `${b.x}px`);
+      document.body.style.setProperty("--y", `${b.y}px`);
+      setTimeout(() => document.body.classList.add("leaving"), 250);
+      setTimeout(() => { window.location.href = enter.href; }, 1100);
+    });
 
-  enter.addEventListener("pointerenter", (e) => {
-    if (!reduceMotion) burst(e.clientX, e.clientY, 24);
-  });
+    enter.addEventListener("pointerenter", (e) => {
+      if (!reduceMotion) burst(e.clientX, e.clientY, 24);
+    });
+  }
 
   // Coming back via the browser's back button should show the page again.
   window.addEventListener("pageshow", (e) => {
@@ -249,8 +267,25 @@
 
   resize();
 
+  // Run fn when the show starts: straight away, or after "tap to enter" (intro.js).
+  function whenShown(fn) {
+    if (document.documentElement.classList.contains("waiting")) {
+      window.addEventListener("neverland:show", fn, { once: true });
+    } else {
+      fn();
+    }
+  }
+  whenShown(() => { offStageUntil = performance.now() + (calm ? 300 : 2600 + introMs); });
+  // In calm mode she flies in from just past her corner.
+  if (calm) {
+    pos.x = target.x = w + 60;
+    pos.y = target.y = h - 140;
+  }
+
   window.Tink = {
     reduceMotion,
+    introMs,
+    whenShown,
     // Fly a scripted route; each point may carry its own speed and done().
     fly(points) { route = points.slice(); },
     jumpTo(x, y) { pos.x = target.x = x; pos.y = target.y = y; },
@@ -259,8 +294,13 @@
   };
 
   if (reduceMotion) {
-    // Keep her still, glowing beside the button.
+    // Keep her still, glowing beside the button (or in her corner).
     const place = () => {
+      if (!enter) {
+        const r = restSpot();
+        tink.style.transform = `translate3d(${r.x}px, ${r.y}px, 0)`;
+        return;
+      }
       const b = buttonCenter();
       tink.style.transform = `translate3d(${b.x + b.r.width / 2 + 30}px, ${b.y - 20}px, 0)`;
     };

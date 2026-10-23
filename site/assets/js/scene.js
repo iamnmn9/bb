@@ -112,9 +112,9 @@
   const fontsReady = document.fonts ? document.fonts.ready : Promise.resolve();
   Promise.race([fontsReady, new Promise((r) => setTimeout(r, 1500))]).then(() => {
     measure();
-    setTimeout(opening, 700);
+    window.Tink.whenShown(() => setTimeout(opening, 700 + window.Tink.introMs));
   });
 
   // Whatever happens, the news must come out.
-  setTimeout(revealBadge, 6000);
+  window.Tink.whenShown(() => setTimeout(revealBadge, 11000 + window.Tink.introMs));
 })();

@@ -11,10 +11,15 @@ site/                     ← everything that gets published
   neverland.html          ← inside page: invitation, countdown, registry, RSVP
   assets/css/style.css
   assets/js/sky.js        ← twinkling stars
-  assets/js/skyline.js    ← lit windows in the London skyline
+  assets/js/skyline.js    ← loads the London night scene (assets/img/london.svg)
   assets/js/tinkerbell.js ← Tinker Bell + pixie dust trail
   assets/js/scene.js      ← opening sequence, "It's a Boy!" reveal, parallax
   assets/js/neverland.js  ← countdown + cards rising into view
+  assets/js/intro.js      ← opening flight across the sky before the landing page
+  assets/js/music.js      ← background song, shared by both pages
+  assets/img/             ← character images
+  assets/audio/           ← background song
+tools/make_london.py      ← draws assets/img/london.svg (run: python3 tools/make_london.py)
 .github/workflows/
   pages.yml               ← deploys site/ to GitHub Pages on push to main
   check.yml               ← validates the HTML on PRs and pushes
@@ -35,3 +40,7 @@ python3 -m http.server -d site 8000
 
 The site will be live at `https://<your-github-username>.github.io/bb/`.
 Share that link with everyone!
+
+## Image credits
+
+- Shri Ganesh: "Shri Mangalmurti", Ravi Varma Press, c. 1900 (public domain, via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Sri_Mangalmurthy.jpg)).

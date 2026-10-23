@@ -4,6 +4,7 @@
   const ctx = canvas.getContext("2d");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let stars = [];
+  let golds = [];
   let shooting = [];
   let nextShootAt = 2500;
   let w, h, dpr;
@@ -34,6 +35,40 @@
         big,
       };
     });
+
+    // A few big golden stars with a soft glow, like a storybook sky.
+    golds = Array.from({ length: Math.round(Math.min(16, Math.max(7, w / 90))) }, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h * 0.6,
+      r: Math.random() * 2 + 2.2,
+      phase: Math.random() * Math.PI * 2,
+      speed: Math.random() * 0.6 + 0.3,
+    }));
+  }
+
+  function drawGold(s, t) {
+    const tw = reduceMotion ? 0.9 : 0.7 + 0.3 * Math.sin(t / 1000 * s.speed + s.phase);
+    const glow = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 6);
+    glow.addColorStop(0, `rgba(255, 244, 200, ${tw})`);
+    glow.addColorStop(0.25, `rgba(255, 214, 110, ${tw * 0.55})`);
+    glow.addColorStop(1, "rgba(255, 214, 110, 0)");
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = glow;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r * 6, 0, Math.PI * 2);
+    ctx.fill();
+    // Four-pointed sparkle in the middle
+    const len = s.r * 2.4;
+    ctx.globalAlpha = tw;
+    ctx.fillStyle = "#fff3c4";
+    ctx.beginPath();
+    for (let i = 0; i < 8; i++) {
+      const rad = i % 2 === 0 ? len : len * 0.25;
+      const a = (i / 8) * Math.PI * 2 - Math.PI / 2;
+      ctx.lineTo(s.x + Math.cos(a) * rad, s.y + Math.sin(a) * rad);
+    }
+    ctx.closePath();
+    ctx.fill();
   }
 
   function spawnShootingStar() {
@@ -107,6 +142,7 @@
   function draw(t) {
     ctx.clearRect(0, 0, w, h);
     for (const s of stars) drawStar(s, t);
+    for (const s of golds) drawGold(s, t);
     if (!reduceMotion) drawShootingStars(t);
     ctx.globalAlpha = 1;
     if (!reduceMotion) requestAnimationFrame(draw);
