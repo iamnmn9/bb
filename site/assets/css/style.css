@@ -628,20 +628,6 @@ body.inside {
   margin: -42px 0 0 -42px;
 }
 
-/* Placeholder for a detail we don't have yet. */
-.todo {
-  padding: 0 .35em;
-  border: 1px dashed rgba(255, 215, 106, .7);
-  border-radius: 6px;
-  color: var(--gold-soft);
-  font-style: italic;
-}
-.is-todo {
-  opacity: .55;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
 /* ---------- Countdown ---------- */
 
 .countdown { margin-top: 2rem; }
@@ -689,36 +675,169 @@ body.inside {
 }
 .countdown-note:empty { display: none; }
 
-/* ---------- Section pills ---------- */
+/* ---------- The palace (neverland.js opens its doors) ---------- */
 
-.pills {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 2.2rem;
+[hidden] { display: none !important; }
+
+.palace-hint {
+  margin: 2.2rem 0 0;
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--gold-soft);
+  text-shadow: 0 0 12px rgba(255, 215, 106, .45);
 }
-.pills a {
-  padding: .5rem 1.1rem;
+.palace {
+  position: relative;
+  width: min(560px, 100%);
+  margin: .4rem auto 0;
+  transition: transform .55s cubic-bezier(.5, 0, .75, 0), opacity .55s ease;
+}
+/* Zooming in through the door that was opened. */
+.palace.zoom { transform: scale(2.6); opacity: 0; }
+
+.palace-float {
+  position: relative;
+  aspect-ratio: 1;
+  animation: palace-float 7s ease-in-out infinite;
+}
+.palace-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 0 24px rgba(143, 211, 255, .25));
+}
+@keyframes palace-float {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -10px; }
+}
+
+.palace-halo { animation: halo 5s ease-in-out infinite; }
+@keyframes halo {
+  0%, 100% { opacity: .75; }
+  50%      { opacity: 1; }
+}
+.palace-windows path { animation: palace-window 4s ease-in-out infinite; animation-delay: var(--d); }
+@keyframes palace-window {
+  0%, 100% { opacity: .8; }
+  50%      { opacity: 1; }
+}
+.pennant {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: pennant 1.4s ease-in-out infinite alternate;
+}
+@keyframes pennant {
+  from { transform: skewY(-6deg) scaleX(.9); }
+  to   { transform: skewY(6deg) scaleX(1.05); }
+}
+
+/* Doors: a warm glow behind them, and leaves that swing open from the hinges. */
+.door-light { animation: door-glow 2.8s ease-in-out infinite; }
+.door-registry .door-light { animation-delay: -.9s; }
+.door-rsvp .door-light { animation-delay: -1.8s; }
+@keyframes door-glow {
+  0%, 100% { opacity: .75; }
+  50%      { opacity: 1; }
+}
+.leaf {
+  transform-box: fill-box;
+  transition: transform .7s cubic-bezier(.3, .7, .3, 1);
+}
+.leaf-l { transform-origin: left center; }
+.leaf-r { transform-origin: right center; }
+.palace:not([data-opening]):has(.door-link[href="#invitation"]:hover) .door-invitation .leaf,
+.palace:not([data-opening]):has(.door-link[href="#registry"]:hover) .door-registry .leaf,
+.palace:not([data-opening]):has(.door-link[href="#rsvp"]:hover) .door-rsvp .leaf { transform: scaleX(.82); }
+.palace[data-opening="invitation"] .door-invitation .leaf,
+.palace[data-opening="registry"] .door-registry .leaf,
+.palace[data-opening="rsvp"] .door-rsvp .leaf { transform: scaleX(.06); }
+
+/* Sparkles twinkling around the towers. */
+.spark {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  font-size: var(--s);
+  color: var(--gold-soft);
+  text-shadow: 0 0 10px var(--gold), 0 0 22px rgba(255, 215, 106, .6);
+  pointer-events: none;
+  animation: spark 3.2s ease-in-out infinite;
+  animation-delay: var(--d);
+}
+@keyframes spark {
+  0%, 100% { opacity: .2; transform: scale(.6) rotate(0deg); }
+  50%      { opacity: 1; transform: scale(1.15) rotate(45deg); }
+}
+
+/* Tappable doors, each with a gold name ribbon on the clouds below. */
+.door-link {
+  position: absolute;
+  left: var(--l);
+  top: var(--t);
+  width: var(--w);
+  height: var(--h);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  border-radius: 45% 45% 14px 14px;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.door-label {
+  white-space: nowrap;
+  padding: .38em 1em;
   border-radius: 999px;
   font-family: "Cinzel Decorative", serif;
-  font-size: .95rem;
+  font-weight: 700;
+  font-size: clamp(.78rem, 3vw, 1.08rem);
+  color: #1a1440;
+  background: linear-gradient(135deg, #fff3c4 0%, var(--gold) 50%, #f3b93f 100%);
+  box-shadow:
+    0 0 0 1.5px rgba(255, 255, 255, .55) inset,
+    0 0 18px 3px rgba(255, 215, 106, .5);
+  transition: transform .3s cubic-bezier(.2, 1.4, .4, 1), box-shadow .3s ease;
+}
+.door-main .door-label { font-size: clamp(.86rem, 3.4vw, 1.2rem); }
+.door-link:hover .door-label,
+.door-link:focus-visible .door-label {
+  transform: translateY(-2px) scale(1.08);
+  box-shadow:
+    0 0 0 1.5px rgba(255, 255, 255, .8) inset,
+    0 0 30px 8px rgba(255, 215, 106, .75);
+}
+.door-link:focus-visible { outline: none; }
+.door-link:focus-visible .door-label { outline: 2px solid #fff; outline-offset: 3px; }
+
+/* ---------- Rooms ---------- */
+
+/* Inside a room: just the card, a little way down from the top. */
+body[data-view="room"] .sections { padding-top: max(9vh, 56px); }
+.back-palace {
+  display: inline-block;
+  margin: -.4rem 0 1.2rem;
+  padding: .45rem 1.1rem;
+  border-radius: 999px;
+  font-size: 1.05rem;
   color: var(--gold-soft);
   text-decoration: none;
   border: 1px solid rgba(255, 215, 106, .5);
   background: rgba(6, 26, 48, .45);
   transition: background .25s ease, box-shadow .25s ease;
 }
-.pills a:hover,
-.pills a:focus-visible {
+.back-palace:hover,
+.back-palace:focus-visible {
   background: rgba(255, 215, 106, .16);
   box-shadow: 0 0 18px rgba(255, 215, 106, .35);
 }
-.pills a:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.back-palace:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.back-palace.back-bottom { margin: 1.8rem 0 0; }
+/* Without JavaScript every room shows, so the way back isn't needed. */
+html:not(.js) .back-palace { display: none; }
+.card h2:focus { outline: none; }
 
 /* ---------- Cards ---------- */
-
-html:has(body.inside) { scroll-behavior: smooth; }
 
 .sections {
   position: relative;
@@ -832,6 +951,111 @@ html:has(body.inside) { scroll-behavior: smooth; }
 }
 .card-registry .enter { margin-top: .4rem; }
 
+/* ---------- RSVP form ---------- */
+
+.rsvp-form {
+  display: grid;
+  gap: 18px;
+  margin-top: 1.4rem;
+  text-align: left;
+}
+.rsvp-form[hidden] { display: none; }
+.field {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.field[hidden] { display: none; }
+.field-label {
+  padding: 0;
+  font-family: "Cinzel Decorative", serif;
+  font-size: .9rem;
+  letter-spacing: .06em;
+  color: var(--boy);
+}
+.field-label small {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1rem;
+  letter-spacing: 0;
+  color: var(--ink-dim);
+}
+/* 1.15rem keeps iPhones from zooming in when a field is tapped. */
+.rsvp-form input[type="text"],
+.rsvp-form input[type="number"],
+.rsvp-form textarea {
+  width: 100%;
+  padding: .7rem .9rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 215, 106, .35);
+  background: rgba(3, 14, 28, .55);
+  color: var(--ink);
+  font: inherit;
+  font-size: 1.15rem;
+}
+.rsvp-form textarea { min-height: 96px; resize: vertical; }
+.rsvp-form input:focus-visible,
+.rsvp-form textarea:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+}
+.choice {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .6rem .9rem;
+  border-radius: 12px;
+  border: 1px solid rgba(143, 211, 255, .3);
+  background: rgba(3, 14, 28, .35);
+  font-size: 1.15rem;
+  cursor: pointer;
+  transition: border-color .2s ease, background .2s ease;
+}
+.choice + .choice { margin-top: 8px; }
+.choice:has(input:checked) {
+  border-color: var(--gold);
+  background: rgba(255, 215, 106, .12);
+}
+.choice input {
+  width: 1.15rem;
+  height: 1.15rem;
+  margin: 0;
+  accent-color: var(--gold);
+}
+.rsvp-form .enter {
+  justify-self: center;
+  margin-top: .4rem;
+  border: 0;
+  cursor: pointer;
+}
+.rsvp-form .enter:disabled { opacity: .6; cursor: progress; }
+.card .form-status {
+  min-height: 1.4em;
+  margin: 0;
+  text-align: center;
+  font-size: 1.05rem;
+  color: var(--ink-dim);
+}
+.card .form-status.error { color: #ffb4a8; }
+
+.rsvp-thanks {
+  margin-top: 1.2rem;
+  padding: 1.4rem;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 215, 106, .5);
+  background: rgba(255, 215, 106, .08);
+  outline: none;
+}
+.card .thanks-title {
+  margin: 0 0 .4rem;
+  font-family: "Cinzel Decorative", serif;
+  font-size: 1.5rem;
+  color: var(--gold-soft);
+}
+.card .thanks-text { margin: 0; }
+
 /* Cards rise into view as you scroll (neverland.js adds .in). */
 .js .rise-in {
   opacity: 0;
@@ -891,5 +1115,6 @@ html:has(body.inside) { scroll-behavior: smooth; }
   .js .badge.revealed, .js .badge.revealed .badge-star { animation: none; }
   .js .badge.revealed { opacity: 1; transform: none; }
   .js .rise-in { opacity: 1; transform: none; transition: none; }
-  html:has(body.inside) { scroll-behavior: auto; }
+  .palace-float, .palace-halo, .palace-windows path, .pennant, .door-light, .spark { animation: none; }
+  .leaf, .palace { transition: none; }
 }

@@ -20,6 +20,7 @@ site/                     ← everything that gets published
   assets/img/             ← character images
   assets/audio/           ← background song
 tools/make_london.py      ← draws assets/img/london.svg (run: python3 tools/make_london.py)
+tools/make_palace.py      ← draws the palace into neverland.html (run: python3 tools/make_palace.py)
 .github/workflows/
   pages.yml               ← deploys site/ to GitHub Pages on push to main
   check.yml               ← validates the HTML on PRs and pushes
@@ -40,6 +41,10 @@ python3 -m http.server -d site 8000
 
 The site will be live at `https://<your-github-username>.github.io/bb/`.
 Share that link with everyone!
+
+## RSVPs
+
+The RSVP form on `neverland.html` posts to Formspree (form `xoeejaab`), which emails each reply to the account owner and keeps them in the Formspree dashboard. The free plan allows 50 submissions a month.
 
 ## Image credits
 
