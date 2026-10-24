@@ -27,7 +27,8 @@ html, body {
 body {
   min-height: 100vh;
   min-height: 100dvh;
-  overflow: hidden;
+  /* Very short phone screens can scroll rather than cut off the button. */
+  overflow-x: hidden;
   color: var(--ink);
   font-family: "Cormorant Garamond", Georgia, serif;
   background-color: var(--night-2);
@@ -235,7 +236,7 @@ body::before {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 24px 16px 22vh;
+  padding: 24px 16px 10vh;
 }
 
 .kicker {
@@ -244,6 +245,7 @@ body::before {
   font-size: clamp(1rem, 2.4vw, 1.3rem);
   color: var(--ink-dim);
   letter-spacing: .02em;
+  text-shadow: 0 1px 8px rgba(3, 12, 26, .9);
 }
 
 h1 {
@@ -1087,8 +1089,17 @@ html:not(.js) .back-palace { display: none; }
 
 /* ---------- Small screens ---------- */
 
+/* Short laptop windows: size the landing title by height so it all fits. */
+@media (min-width: 601px) and (max-height: 720px) {
+  .hero { padding-bottom: 4vh; }
+  .hero h1 { font-size: clamp(2.3rem, 11vh, 5.2rem); }
+  .hero .lede { margin: 1rem auto 1.4rem; }
+}
+
 @media (max-width: 600px) {
   .moon { top: 3vh; left: 5vw; width: 64px; }
+  /* Keep the opening line clear of the moon on shorter phone screens. */
+  .hero { padding-top: calc(3vh + 78px); padding-bottom: 8vh; }
   .second-star { top: 6vh; right: 10vw; }
   .badge { margin-top: 1rem; }
 }
