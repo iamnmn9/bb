@@ -675,36 +675,169 @@ body.inside {
 }
 .countdown-note:empty { display: none; }
 
-/* ---------- Section pills ---------- */
+/* ---------- The palace (neverland.js opens its doors) ---------- */
 
-.pills {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 2.2rem;
+[hidden] { display: none !important; }
+
+.palace-hint {
+  margin: 2.2rem 0 0;
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--gold-soft);
+  text-shadow: 0 0 12px rgba(255, 215, 106, .45);
 }
-.pills a {
-  padding: .5rem 1.1rem;
+.palace {
+  position: relative;
+  width: min(560px, 100%);
+  margin: .4rem auto 0;
+  transition: transform .55s cubic-bezier(.5, 0, .75, 0), opacity .55s ease;
+}
+/* Zooming in through the door that was opened. */
+.palace.zoom { transform: scale(2.6); opacity: 0; }
+
+.palace-float {
+  position: relative;
+  aspect-ratio: 1;
+  animation: palace-float 7s ease-in-out infinite;
+}
+.palace-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 0 24px rgba(143, 211, 255, .25));
+}
+@keyframes palace-float {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -10px; }
+}
+
+.palace-halo { animation: halo 5s ease-in-out infinite; }
+@keyframes halo {
+  0%, 100% { opacity: .75; }
+  50%      { opacity: 1; }
+}
+.palace-windows path { animation: palace-window 4s ease-in-out infinite; animation-delay: var(--d); }
+@keyframes palace-window {
+  0%, 100% { opacity: .8; }
+  50%      { opacity: 1; }
+}
+.pennant {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: pennant 1.4s ease-in-out infinite alternate;
+}
+@keyframes pennant {
+  from { transform: skewY(-6deg) scaleX(.9); }
+  to   { transform: skewY(6deg) scaleX(1.05); }
+}
+
+/* Doors: a warm glow behind them, and leaves that swing open from the hinges. */
+.door-light { animation: door-glow 2.8s ease-in-out infinite; }
+.door-registry .door-light { animation-delay: -.9s; }
+.door-rsvp .door-light { animation-delay: -1.8s; }
+@keyframes door-glow {
+  0%, 100% { opacity: .75; }
+  50%      { opacity: 1; }
+}
+.leaf {
+  transform-box: fill-box;
+  transition: transform .7s cubic-bezier(.3, .7, .3, 1);
+}
+.leaf-l { transform-origin: left center; }
+.leaf-r { transform-origin: right center; }
+.palace:not([data-opening]):has(.door-link[href="#invitation"]:hover) .door-invitation .leaf,
+.palace:not([data-opening]):has(.door-link[href="#registry"]:hover) .door-registry .leaf,
+.palace:not([data-opening]):has(.door-link[href="#rsvp"]:hover) .door-rsvp .leaf { transform: scaleX(.82); }
+.palace[data-opening="invitation"] .door-invitation .leaf,
+.palace[data-opening="registry"] .door-registry .leaf,
+.palace[data-opening="rsvp"] .door-rsvp .leaf { transform: scaleX(.06); }
+
+/* Sparkles twinkling around the towers. */
+.spark {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  font-size: var(--s);
+  color: var(--gold-soft);
+  text-shadow: 0 0 10px var(--gold), 0 0 22px rgba(255, 215, 106, .6);
+  pointer-events: none;
+  animation: spark 3.2s ease-in-out infinite;
+  animation-delay: var(--d);
+}
+@keyframes spark {
+  0%, 100% { opacity: .2; transform: scale(.6) rotate(0deg); }
+  50%      { opacity: 1; transform: scale(1.15) rotate(45deg); }
+}
+
+/* Tappable doors, each with a gold name ribbon on the clouds below. */
+.door-link {
+  position: absolute;
+  left: var(--l);
+  top: var(--t);
+  width: var(--w);
+  height: var(--h);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  border-radius: 45% 45% 14px 14px;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.door-label {
+  white-space: nowrap;
+  padding: .38em 1em;
   border-radius: 999px;
   font-family: "Cinzel Decorative", serif;
-  font-size: .95rem;
+  font-weight: 700;
+  font-size: clamp(.78rem, 3vw, 1.08rem);
+  color: #1a1440;
+  background: linear-gradient(135deg, #fff3c4 0%, var(--gold) 50%, #f3b93f 100%);
+  box-shadow:
+    0 0 0 1.5px rgba(255, 255, 255, .55) inset,
+    0 0 18px 3px rgba(255, 215, 106, .5);
+  transition: transform .3s cubic-bezier(.2, 1.4, .4, 1), box-shadow .3s ease;
+}
+.door-main .door-label { font-size: clamp(.86rem, 3.4vw, 1.2rem); }
+.door-link:hover .door-label,
+.door-link:focus-visible .door-label {
+  transform: translateY(-2px) scale(1.08);
+  box-shadow:
+    0 0 0 1.5px rgba(255, 255, 255, .8) inset,
+    0 0 30px 8px rgba(255, 215, 106, .75);
+}
+.door-link:focus-visible { outline: none; }
+.door-link:focus-visible .door-label { outline: 2px solid #fff; outline-offset: 3px; }
+
+/* ---------- Rooms ---------- */
+
+/* Inside a room: just the card, a little way down from the top. */
+body[data-view="room"] .sections { padding-top: max(9vh, 56px); }
+.back-palace {
+  display: inline-block;
+  margin: -.4rem 0 1.2rem;
+  padding: .45rem 1.1rem;
+  border-radius: 999px;
+  font-size: 1.05rem;
   color: var(--gold-soft);
   text-decoration: none;
   border: 1px solid rgba(255, 215, 106, .5);
   background: rgba(6, 26, 48, .45);
   transition: background .25s ease, box-shadow .25s ease;
 }
-.pills a:hover,
-.pills a:focus-visible {
+.back-palace:hover,
+.back-palace:focus-visible {
   background: rgba(255, 215, 106, .16);
   box-shadow: 0 0 18px rgba(255, 215, 106, .35);
 }
-.pills a:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.back-palace:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+.back-palace.back-bottom { margin: 1.8rem 0 0; }
+/* Without JavaScript every room shows, so the way back isn't needed. */
+html:not(.js) .back-palace { display: none; }
+.card h2:focus { outline: none; }
 
 /* ---------- Cards ---------- */
-
-html:has(body.inside) { scroll-behavior: smooth; }
 
 .sections {
   position: relative;
@@ -982,5 +1115,6 @@ html:has(body.inside) { scroll-behavior: smooth; }
   .js .badge.revealed, .js .badge.revealed .badge-star { animation: none; }
   .js .badge.revealed { opacity: 1; transform: none; }
   .js .rise-in { opacity: 1; transform: none; transition: none; }
-  html:has(body.inside) { scroll-behavior: auto; }
+  .palace-float, .palace-halo, .palace-windows path, .pennant, .door-light, .spark { animation: none; }
+  .leaf, .palace { transition: none; }
 }

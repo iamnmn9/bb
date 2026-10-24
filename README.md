@@ -20,6 +20,7 @@ site/                     ← everything that gets published
   assets/img/             ← character images
   assets/audio/           ← background song
 tools/make_london.py      ← draws assets/img/london.svg (run: python3 tools/make_london.py)
+tools/make_palace.py      ← draws the palace into neverland.html (run: python3 tools/make_palace.py)
 .github/workflows/
   pages.yml               ← deploys site/ to GitHub Pages on push to main
   check.yml               ← validates the HTML on PRs and pushes
