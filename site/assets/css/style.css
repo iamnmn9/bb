@@ -628,20 +628,6 @@ body.inside {
   margin: -42px 0 0 -42px;
 }
 
-/* Placeholder for a detail we don't have yet. */
-.todo {
-  padding: 0 .35em;
-  border: 1px dashed rgba(255, 215, 106, .7);
-  border-radius: 6px;
-  color: var(--gold-soft);
-  font-style: italic;
-}
-.is-todo {
-  opacity: .55;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
 /* ---------- Countdown ---------- */
 
 .countdown { margin-top: 2rem; }
@@ -831,6 +817,111 @@ html:has(body.inside) { scroll-behavior: smooth; }
     linear-gradient(160deg, rgba(16, 52, 84, .72), rgba(6, 26, 48, .8));
 }
 .card-registry .enter { margin-top: .4rem; }
+
+/* ---------- RSVP form ---------- */
+
+.rsvp-form {
+  display: grid;
+  gap: 18px;
+  margin-top: 1.4rem;
+  text-align: left;
+}
+.rsvp-form[hidden] { display: none; }
+.field {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.field[hidden] { display: none; }
+.field-label {
+  padding: 0;
+  font-family: "Cinzel Decorative", serif;
+  font-size: .9rem;
+  letter-spacing: .06em;
+  color: var(--boy);
+}
+.field-label small {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1rem;
+  letter-spacing: 0;
+  color: var(--ink-dim);
+}
+/* 1.15rem keeps iPhones from zooming in when a field is tapped. */
+.rsvp-form input[type="text"],
+.rsvp-form input[type="number"],
+.rsvp-form textarea {
+  width: 100%;
+  padding: .7rem .9rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 215, 106, .35);
+  background: rgba(3, 14, 28, .55);
+  color: var(--ink);
+  font: inherit;
+  font-size: 1.15rem;
+}
+.rsvp-form textarea { min-height: 96px; resize: vertical; }
+.rsvp-form input:focus-visible,
+.rsvp-form textarea:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+}
+.choice {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .6rem .9rem;
+  border-radius: 12px;
+  border: 1px solid rgba(143, 211, 255, .3);
+  background: rgba(3, 14, 28, .35);
+  font-size: 1.15rem;
+  cursor: pointer;
+  transition: border-color .2s ease, background .2s ease;
+}
+.choice + .choice { margin-top: 8px; }
+.choice:has(input:checked) {
+  border-color: var(--gold);
+  background: rgba(255, 215, 106, .12);
+}
+.choice input {
+  width: 1.15rem;
+  height: 1.15rem;
+  margin: 0;
+  accent-color: var(--gold);
+}
+.rsvp-form .enter {
+  justify-self: center;
+  margin-top: .4rem;
+  border: 0;
+  cursor: pointer;
+}
+.rsvp-form .enter:disabled { opacity: .6; cursor: progress; }
+.card .form-status {
+  min-height: 1.4em;
+  margin: 0;
+  text-align: center;
+  font-size: 1.05rem;
+  color: var(--ink-dim);
+}
+.card .form-status.error { color: #ffb4a8; }
+
+.rsvp-thanks {
+  margin-top: 1.2rem;
+  padding: 1.4rem;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 215, 106, .5);
+  background: rgba(255, 215, 106, .08);
+  outline: none;
+}
+.card .thanks-title {
+  margin: 0 0 .4rem;
+  font-family: "Cinzel Decorative", serif;
+  font-size: 1.5rem;
+  color: var(--gold-soft);
+}
+.card .thanks-text { margin: 0; }
 
 /* Cards rise into view as you scroll (neverland.js adds .in). */
 .js .rise-in {

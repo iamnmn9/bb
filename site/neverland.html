@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>You're Invited: Baby Pundir's Baby Shower</title>
-  <meta name="description" content="The invitation, registry and RSVP for Baby Pundir's Peter Pan baby shower. It's a boy!">
+  <meta name="description" content="Baby Pundir's Peter Pan baby shower: Saturday, December 12, 11 AM at The Barrel Factory, Buffalo. Invitation, registry and RSVP. It's a boy!">
   <meta property="og:title" content="You're invited to Baby Pundir's baby shower ✨">
-  <meta property="og:description" content="It's a boy! Second star to the right, and straight on till morning.">
+  <meta property="og:description" content="It's a boy! Saturday, December 12, 11 AM · The Barrel Factory, Buffalo. Second star to the right, and straight on till morning.">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#041226">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>">
@@ -67,10 +67,8 @@
       <span class="badge-star" aria-hidden="true">✦</span>
     </p>
 
-    <!-- Countdown, filled in by neverland.js.
-         TODO: set data-start to the shower's start, with its UTC offset,
-         e.g. data-start="2026-12-12T14:00:00+00:00". -->
-    <div id="countdown" class="countdown" data-start="">
+    <!-- Countdown to the start (11 AM Eastern, UTC-5), filled in by neverland.js -->
+    <div id="countdown" class="countdown" data-start="2026-12-12T11:00:00-05:00">
       <p class="countdown-label">Until we fly to Neverland</p>
       <div class="countdown-units" role="timer" hidden>
         <span class="unit"><b data-unit="days">0</b><small>days</small></span>
@@ -78,7 +76,7 @@
         <span class="unit"><b data-unit="minutes">0</b><small>mins</small></span>
         <span class="unit"><b data-unit="seconds">0</b><small>secs</small></span>
       </div>
-      <p class="countdown-note"><span class="todo">The countdown begins once the date is set</span></p>
+      <p class="countdown-note"></p>
     </div>
 
     <nav class="pills" aria-label="Sections">
@@ -99,31 +97,26 @@
       <dl class="details">
         <div>
           <dt>When</dt>
-          <!-- TODO: date and time -->
-          <dd><span class="todo">Date</span> · <span class="todo">Time</span></dd>
+          <dd>Saturday, December 12, 2026<br>11:00 AM – 3:00 PM</dd>
         </div>
         <div>
           <dt>Where</dt>
-          <!-- TODO: venue name and address; give the map link an href:
-               https://www.google.com/maps/search/?api=1&query=<url-encoded address> -->
           <dd>
-            <span class="todo">Venue name</span><br>
-            <span class="todo">Venue address</span><br>
-            <a class="map-link is-todo" aria-disabled="true">Open in Google Maps</a>
+            The Barrel Factory<br>
+            65 Vandalia St, Buffalo, NY 14204<br>
+            <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=The+Barrel+Factory%2C+65+Vandalia+St%2C+Buffalo%2C+NY+14204" target="_blank" rel="noopener">Open in Google Maps</a>
           </dd>
         </div>
         <div>
           <dt>Hosted by</dt>
-          <!-- TODO: host names -->
-          <dd><span class="todo">Host names</span></dd>
+          <dd>Sydney and Naman Pundir</dd>
         </div>
       </dl>
 
-      <!-- TODO: once the details are set, link these to baby-shower.ics and a Google Calendar URL -->
       <div class="actions">
         <p class="actions-label">Add to calendar</p>
-        <a class="btn is-todo" aria-disabled="true">Apple / Outlook (.ics)</a>
-        <a class="btn is-todo" aria-disabled="true">Google Calendar</a>
+        <a class="btn" href="baby-shower.ics">Apple / Outlook (.ics)</a>
+        <a class="btn" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Baby+Pundir%27s+Baby+Shower&amp;dates=20261212T160000Z/20261212T200000Z&amp;location=The+Barrel+Factory%2C+65+Vandalia+St%2C+Buffalo%2C+NY+14204&amp;details=Come+fly+with+us+to+Neverland%21+Invitation%2C+registry+and+RSVP%3A+https%3A%2F%2Fiamnmn9.github.io%2Fbb%2Fneverland.html" target="_blank" rel="noopener">Google Calendar</a>
       </div>
     </section>
 
@@ -132,17 +125,50 @@
       <p class="eyebrow">The Registry</p>
       <h2 id="registry-title">A treasure chest for our Lost Boy</h2>
       <p>Your company is the greatest gift of all. If you'd like to bring something for Baby Pundir, we've put together a little list on Amazon.</p>
-      <!-- TODO: add href="<Amazon registry URL>" target="_blank" rel="noopener" and remove is-todo / aria-disabled -->
-      <a class="enter is-todo" aria-disabled="true"><span>Open our Amazon registry</span></a>
-      <p class="fine-print"><span class="todo">Registry link coming soon</span></p>
+      <a class="enter" href="https://www.amazon.com/baby-reg/sydney-pundir-february-2027-buffalo/1U5L5IB5YAIJA" target="_blank" rel="noopener"><span>Open our Amazon registry</span></a>
+      <p class="fine-print">Opens Amazon in a new tab</p>
     </section>
 
-    <!-- 3. RSVP (the form is waiting on the choice of RSVP service) -->
+    <!-- 3. RSVP: replies go to Formspree, which emails them to us (neverland.js sends it without leaving the page) -->
     <section id="rsvp" class="card rise-in" aria-labelledby="rsvp-title">
       <p class="eyebrow">RSVP</p>
       <h2 id="rsvp-title">Will you fly with us?</h2>
-      <p>Please let us know if you can make it by <span class="todo">RSVP-by date</span>.</p>
-      <p class="fine-print"><span class="todo">The RSVP form is on its way</span></p>
+      <p>Please let us know if you can make it by <strong>Monday, November 30</strong>.</p>
+
+      <form id="rsvp-form" class="rsvp-form" action="https://formspree.io/f/xoeejaab" method="POST">
+        <input type="hidden" name="_subject" value="New RSVP for Baby Pundir's baby shower">
+        <!-- Spam trap: people never see this, bots fill it in -->
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+        <label class="field">
+          <span class="field-label">Your name</span>
+          <input type="text" name="name" required autocomplete="name">
+        </label>
+
+        <fieldset class="field">
+          <legend class="field-label">Will you be there?</legend>
+          <label class="choice"><input type="radio" name="attending" value="Yes" required> <span>Yes, I'll fly in!</span></label>
+          <label class="choice"><input type="radio" name="attending" value="No"> <span>Sadly, I can't make it</span></label>
+        </fieldset>
+
+        <label id="guests-field" class="field">
+          <span class="field-label">How many guests, including you?</span>
+          <input type="number" name="guests" min="1" max="10" value="1" inputmode="numeric" required>
+        </label>
+
+        <label class="field">
+          <span class="field-label">A message for Baby Pundir <small>(optional)</small></span>
+          <textarea name="message" rows="3"></textarea>
+        </label>
+
+        <button class="enter" type="submit"><span>Send my RSVP</span></button>
+        <p class="form-status" role="status"></p>
+      </form>
+
+      <div id="rsvp-thanks" class="rsvp-thanks" tabindex="-1" hidden>
+        <p class="thanks-title">Thank you! ✨</p>
+        <p class="thanks-text"></p>
+      </div>
     </section>
   </main>
 

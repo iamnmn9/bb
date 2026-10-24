@@ -41,6 +41,10 @@ python3 -m http.server -d site 8000
 The site will be live at `https://<your-github-username>.github.io/bb/`.
 Share that link with everyone!
 
+## RSVPs
+
+The RSVP form on `neverland.html` posts to Formspree (form `xoeejaab`), which emails each reply to the account owner and keeps them in the Formspree dashboard. The free plan allows 50 submissions a month.
+
 ## Image credits
 
 - Shri Ganesh: "Shri Mangalmurti", Ravi Varma Press, c. 1900 (public domain, via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Sri_Mangalmurthy.jpg)).

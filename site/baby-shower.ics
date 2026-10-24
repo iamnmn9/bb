@@ -1,0 +1,23 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Baby Pundir//Neverland//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:baby-pundir-shower-20261212@iamnmn9.github.io
+DTSTAMP:20261024T000000Z
+DTSTART:20261212T160000Z
+DTEND:20261212T200000Z
+SUMMARY:Baby Pundir's Baby Shower ✨
+LOCATION:The Barrel Factory\, 65 Vandalia St\, Buffalo\, NY 14204
+DESCRIPTION:Come fly with us to Neverland! Hosted by Sydney and Naman Pundi
+ r.\nInvitation\, registry and RSVP: https://iamnmn9.github.io/bb/neverland
+ .html
+URL:https://iamnmn9.github.io/bb/neverland.html
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Baby Pundir's Baby Shower tomorrow
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+END:VCALENDAR
