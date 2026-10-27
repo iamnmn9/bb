@@ -42,6 +42,10 @@ python3 -m http.server -d site 8000
 The site will be live at `https://<your-github-username>.github.io/bb/`.
 Share that link with everyone!
 
+## Updating the site
+
+GitHub Pages lets browsers cache files for 10 minutes, and phones often keep them longer. Both pages load the CSS and JavaScript with a version tag (`style.css?v=20261027`). When you change any CSS or JS file, bump that tag in both `index.html` and `neverland.html` so guests get the new files straight away.
+
 ## RSVPs
 
 The RSVP form on `neverland.html` posts to Formspree (form `xoeejaab`), which emails each reply to the account owner and keeps them in the Formspree dashboard. The free plan allows 50 submissions a month.
